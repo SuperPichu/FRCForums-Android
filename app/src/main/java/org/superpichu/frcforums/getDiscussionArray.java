@@ -1,5 +1,7 @@
 package org.superpichu.frcforums;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import org.apache.http.HttpResponse;
@@ -10,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -30,11 +33,13 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
             JSONArray array = json.getJSONArray("Discussions");
             for(int i = 0; i<array.length();i++){
                 int id = array.getJSONObject(i).getInt("DiscussionID");
-                String name = array.getJSONObject(i).get("Name").toString();
-                String firstName = array.getJSONObject(i).get("FirstName").toString();
-                String lastName = array.getJSONObject(i).get("LastName").toString();
+                String name = array.getJSONObject(i).getString("Name");
+                String firstName = array.getJSONObject(i).getString("FirstName");
+                String lastName = array.getJSONObject(i).getString("LastName");
                 String description = firstName + "     Most recent by: " + lastName;
-                discussions.add(new Discussion(name,description,id));
+                URL url = new URL(array.getJSONObject(i).getString("FirstPhoto"));
+                Bitmap icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                discussions.add(new Discussion(name,description,id,icon));
             }
         }catch (Exception e){
             e.printStackTrace();
