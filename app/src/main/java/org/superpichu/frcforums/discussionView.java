@@ -1,50 +1,42 @@
 package org.superpichu.frcforums;
 
 import android.app.ListActivity;
+import android.app.Notification;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
-public class MainActivity extends ActionBarActivity {
-    ArrayList<Discussion> discussions;
+public class discussionView extends ActionBarActivity {
+    ArrayList<Comment> comments;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_discussion_view);
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("id");
         ListView listView = (ListView)findViewById(R.id.listView);
-        discussions = new ArrayList<Discussion>();
         try {
-            discussions = new getDiscussionArray().execute("null").get();
-        }catch (Exception e){
+            comments = new getCommentArray().execute(id).get();
+        }catch (Exception e) {
             e.printStackTrace();
         }
-        discussionAdapter adapter = new discussionAdapter(this,discussions);
+        System.out.println(comments.size());
+        CommentAdapter adapter = new CommentAdapter(this,comments);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> av, View v, int position, long id) {
-                String discussion = String.valueOf(discussions.get(position).id);
-                viewThread(discussion);
-            }
-
-        });
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_discussion_view, menu);
         return true;
     }
 
@@ -62,10 +54,4 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void viewThread(String id){
-        Intent intent = new Intent(this,discussionView.class);
-        intent.putExtra("id",id);
-        startActivity(intent);
-    }
-
 }

@@ -2,6 +2,8 @@ package org.superpichu.frcforums;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+
 /**
  * Created by chris on 4/1/15.
  */
@@ -10,6 +12,7 @@ public class Discussion {
     public String description;
     public int id;
     public Bitmap icon;
+    public ArrayList<Comment> comments;
 
     public Discussion(String name, String description,int id,Bitmap icon){
         this.name = name;
