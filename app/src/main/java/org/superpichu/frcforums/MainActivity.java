@@ -65,6 +65,7 @@ public class MainActivity extends ActionBarActivity {
     public void viewThread(String id){
         Intent intent = new Intent(this,discussionView.class);
         intent.putExtra("id",id);
+        intent.putExtra("range","1-20");
         startActivity(intent);
     }
 

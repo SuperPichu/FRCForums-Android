@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -15,15 +16,18 @@ import java.util.concurrent.ExecutionException;
 
 public class discussionView extends ActionBarActivity {
     ArrayList<Comment> comments;
+    String id,range;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discussion_view);
         Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
+        id = intent.getStringExtra("id");
+        range = intent.getStringExtra("range");
+        String[] data = {id,range};
         ListView listView = (ListView)findViewById(R.id.listView);
         try {
-            comments = new getCommentArray().execute(id).get();
+            comments = new getCommentArray().execute(data).get();
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,5 +57,17 @@ public class discussionView extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void next(View v){
+        Intent intent = new Intent(this,discussionView.class);
+        intent.putExtra("id",id);
+        int start = Integer.parseInt(range.split("-")[1]);
+        int end = start+20;
+        start++;
+        range = start+"-"+end;
+        intent.putExtra("range",range);
+        finish();
+        startActivity(intent);
     }
 }

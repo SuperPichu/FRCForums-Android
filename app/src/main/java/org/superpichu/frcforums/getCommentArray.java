@@ -19,13 +19,15 @@ import java.util.ArrayList;
 /**
  * Created by chris on 4/1/15.
  */
-public class getCommentArray extends AsyncTask<String, Void, ArrayList<Comment>> {
+public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment>> {
     @Override
-    protected ArrayList<Comment> doInBackground(String... params) {
-        String discussionId = params[0];
+    protected ArrayList<Comment> doInBackground(String[]... params) {
+        String[] data = params[0];
+        String discussionId = data[0];
+        String range = data[1];
         ArrayList<Comment> comments = new ArrayList<Comment>();
         DefaultHttpClient defaultClient = new DefaultHttpClient();
-        HttpGet get = new HttpGet("http://forum.frontrowcrew.com/discussion.json?DiscussionID="+discussionId);
+        HttpGet get = new HttpGet("http://forum.frontrowcrew.com/discussion.json?DiscussionID="+discussionId+"&page="+range);
         HttpResponse response = null;
         try {
             response = defaultClient.execute(get);
