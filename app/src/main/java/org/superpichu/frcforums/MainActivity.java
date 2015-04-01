@@ -4,6 +4,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +18,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ListView listView = (ListView)findViewById(R.id.listView);
+        final ArrayList<String> discussionTitles = new ArrayList<String>();
+        ArrayList<Discussion> discussions = new ArrayList<Discussion>();
+        try {
+            discussions = new getDiscussionArray().execute("null").get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        discussionAdapter adapter = new discussionAdapter(this,discussions);
+        listView.setAdapter(adapter);
     }
 
 
