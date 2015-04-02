@@ -22,6 +22,11 @@
             android:name=".discussionView"
             android:label="@string/title_activity_discussion_view" >
         </activity>
+        <activity
+            android:name=".Loading"
+            android:label="@string/title_activity_loading" >
+
+        </activity>
     </application>
 
 </manifest>

@@ -1,7 +1,15 @@
 package org.superpichu.frcforums;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,8 +19,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 
 //TODO Add loading spinner/gif
@@ -24,18 +39,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ListView listView = (ListView)findViewById(R.id.listView);
-        Intent intent = getIntent();
-        if(intent.hasExtra("range")){
-            range = intent.getStringExtra("range");
-        }else{
-            range="1-20";
-        }
-        discussions = new ArrayList<Discussion>();
-        try {
-            discussions = new getDiscussionArray().execute(range).get();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         discussionAdapter adapter = new discussionAdapter(this,discussions,getResources());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -45,6 +48,7 @@ public class MainActivity extends ActionBarActivity {
             }
 
         });
+
     }
 
 
@@ -130,5 +134,8 @@ public class MainActivity extends ActionBarActivity {
         finish();
         startActivity(intent);
     }
+
+
+
 
 }

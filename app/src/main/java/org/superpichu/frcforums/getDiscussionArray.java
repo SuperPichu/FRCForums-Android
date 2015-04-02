@@ -1,5 +1,9 @@
 package org.superpichu.frcforums;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -18,8 +22,11 @@ import java.util.ArrayList;
 /**
  * Created by chris on 4/1/15.
  */
-public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discussion>>{
 
+public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discussion>> {
+    @Override
+    protected void onPreExecute(){
+    }
     @Override
     protected ArrayList<Discussion> doInBackground(String... params) {
         ArrayList<Discussion> discussions = new ArrayList<Discussion>();
@@ -66,5 +73,10 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
         }
 
         return discussions;
+    }
+
+    @Override
+    protected void onPostExecute(ArrayList<Discussion> discussions1) {
+
     }
 }
