@@ -11,7 +11,8 @@ public class Comment {
     public Bitmap icon;
     public int id;
     public String date;
-
+    public int max;
+    public String thread;
     public Comment(){
     }
 }

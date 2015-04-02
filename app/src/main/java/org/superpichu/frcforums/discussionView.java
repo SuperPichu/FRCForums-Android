@@ -31,6 +31,7 @@ public class discussionView extends ActionBarActivity {
         }catch (Exception e) {
             e.printStackTrace();
         }
+        setTitle(comments.get(0).thread);
         System.out.println(comments.size());
         CommentAdapter adapter = new CommentAdapter(this,comments);
         listView.setAdapter(adapter);
@@ -62,9 +63,27 @@ public class discussionView extends ActionBarActivity {
     public void next(View v){
         Intent intent = new Intent(this,discussionView.class);
         intent.putExtra("id",id);
+        int max = comments.get(0).max;
         int start = Integer.parseInt(range.split("-")[1]);
+        if(start == max){
+            start = max - 20;
+        }
         int end = start+20;
+        if(end > max){
+            end = max;
+        }
         start++;
+        range = start+"-"+end;
+        intent.putExtra("range",range);
+        finish();
+        startActivity(intent);
+    }
+
+    public void last(View v){
+        Intent intent = new Intent(this,discussionView.class);
+        intent.putExtra("id",id);
+        int end = comments.get(0).max;
+        int start = end - 20;
         range = start+"-"+end;
         intent.putExtra("range",range);
         finish();
