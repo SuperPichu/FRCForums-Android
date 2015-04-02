@@ -38,6 +38,18 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        if(intent.hasExtra("range")){
+            range = intent.getStringExtra("range");
+        }else{
+            range="1-20";
+        }
+        discussions = new ArrayList<Discussion>();
+        try {
+            discussions = new getDiscussionArray().execute(range).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         ListView listView = (ListView)findViewById(R.id.listView);
         discussionAdapter adapter = new discussionAdapter(this,discussions,getResources());
         listView.setAdapter(adapter);
