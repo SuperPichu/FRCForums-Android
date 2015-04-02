@@ -32,13 +32,12 @@ public class discussionView extends ActionBarActivity {
             e.printStackTrace();
         }
         setTitle(comments.get(0).thread);
-        System.out.println(comments.size());
         CommentAdapter adapter = new CommentAdapter(this,comments);
         listView.setAdapter(adapter);
     }
 
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_discussion_view, menu);
@@ -58,7 +57,7 @@ public class discussionView extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     public void next(View v){
         Intent intent = new Intent(this,discussionView.class);
@@ -84,6 +83,35 @@ public class discussionView extends ActionBarActivity {
         intent.putExtra("id",id);
         int end = comments.get(0).max;
         int start = end - 20;
+        range = start+"-"+end;
+        intent.putExtra("range",range);
+        finish();
+        startActivity(intent);
+    }
+
+    public void prev(View v){
+        Intent intent = new Intent(this,discussionView.class);
+        intent.putExtra("id",id);
+        int end = Integer.parseInt(range.split("-")[0]);
+        if(end <= 1){
+            end = 21;
+        }
+        int start = end - 20;
+        if(start < 1){
+            start = 1;
+        }
+        end--;
+        range = start+"-"+end;
+        intent.putExtra("range",range);
+        finish();
+        startActivity(intent);
+    }
+
+    public void first(View v){
+        Intent intent = new Intent(this,discussionView.class);
+        intent.putExtra("id",id);
+        int start = 1;
+        int end = start + 20;
         range = start+"-"+end;
         intent.putExtra("range",range);
         finish();

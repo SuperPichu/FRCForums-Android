@@ -15,21 +15,28 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-
+//TODO Add loading spinner/gif
 public class MainActivity extends ActionBarActivity {
     ArrayList<Discussion> discussions;
+    String range;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ListView listView = (ListView)findViewById(R.id.listView);
+        Intent intent = getIntent();
+        if(intent.hasExtra("range")){
+            range = intent.getStringExtra("range");
+        }else{
+            range="1-20";
+        }
         discussions = new ArrayList<Discussion>();
         try {
-            discussions = new getDiscussionArray().execute("null").get();
+            discussions = new getDiscussionArray().execute(range).get();
         }catch (Exception e){
             e.printStackTrace();
         }
-        discussionAdapter adapter = new discussionAdapter(this,discussions);
+        discussionAdapter adapter = new discussionAdapter(this,discussions,getResources());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> av, View v, int position, long id) {
@@ -41,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -61,11 +68,66 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
     public void viewThread(String id){
         Intent intent = new Intent(this,discussionView.class);
         intent.putExtra("id",id);
         intent.putExtra("range","1-20");
+        startActivity(intent);
+    }
+
+    public void next(View v){
+        Intent intent = new Intent(this,MainActivity.class);
+        int max = discussions.get(0).max;
+        int start = Integer.parseInt(range.split("-")[1]);
+        if(start == max){
+            start = max - 20;
+        }
+        int end = start+20;
+        if(end > max){
+            end = max;
+        }
+        start++;
+        range = start+"-"+end;
+        intent.putExtra("range",range);
+        finish();
+        startActivity(intent);
+    }
+
+    public void last(View v){
+        Intent intent = new Intent(this,MainActivity.class);
+        int end = discussions.get(0).max;
+        int start = end - 20;
+        range = start+"-"+end;
+        intent.putExtra("range",range);
+        finish();
+        startActivity(intent);
+    }
+
+    public void prev(View v){
+        Intent intent = new Intent(this,MainActivity.class);
+        int end = Integer.parseInt(range.split("-")[0]);
+        if(end <= 1){
+            end = 21;
+        }
+        int start = end - 20;
+        if(start < 1){
+            start = 1;
+        }
+        end--;
+        range = start+"-"+end;
+        intent.putExtra("range",range);
+        finish();
+        startActivity(intent);
+    }
+
+    public void first(View v){
+        Intent intent = new Intent(this,MainActivity.class);
+        int start = 1;
+        int end = start + 20;
+        range = start+"-"+end;
+        intent.putExtra("range",range);
+        finish();
         startActivity(intent);
     }
 

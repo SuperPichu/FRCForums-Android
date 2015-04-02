@@ -1,6 +1,9 @@
 package org.superpichu.frcforums;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +17,10 @@ import java.util.ArrayList;
  * Created by chris on 4/1/15.
  */
 public class discussionAdapter extends ArrayAdapter<Discussion>{
-
-    public discussionAdapter(Context context, ArrayList<Discussion> discussions){
+    Resources resources;
+    public discussionAdapter(Context context, ArrayList<Discussion> discussions, Resources resources2){
         super(context,0,discussions);
+        resources =resources2;
     }
 
     @Override
@@ -28,9 +32,27 @@ public class discussionAdapter extends ArrayAdapter<Discussion>{
         TextView name = (TextView) convertView.findViewById(R.id.firstLine);
         TextView description = (TextView) convertView.findViewById(R.id.secondLine);
         ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
-        name.setText(discussion.name);
+        name.setText(Html.fromHtml(discussion.name, new ImageGetter(),null));
         description.setText(discussion.description);
         icon.setImageBitmap(discussion.icon);
         return convertView;
     }
+
+    private class ImageGetter implements Html.ImageGetter  {
+
+        public Drawable getDrawable(String source) {
+            int id;
+            if (source.equals("announce.png")) {
+                id = R.drawable.announce;
+            }
+            else {
+                return null;
+            }
+
+            Drawable d = resources.getDrawable(id);
+            d.setBounds(0,0,64,64);
+            return d;
+        }
+    };
+
 }

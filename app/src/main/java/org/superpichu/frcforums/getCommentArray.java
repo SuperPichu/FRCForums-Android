@@ -21,7 +21,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,7 +57,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 first.body = parseBody(discussion.getString("Body"));
                 //first.body = discussion.getString("Body");
                 first.user = discussion.getString("InsertName");
-                first.date = discussion.getString("DateInserted");
+                first.date = parseDate(discussion.getString("DateInserted"));
                 URL url = new URL(discussion.getString("InsertPhoto"));
                 first.icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 first.thread = title;
@@ -63,9 +67,10 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 Comment comment = new Comment();
                 comment.id = array.getJSONObject(i).getInt("CommentID");
                 comment.body = parseBody(array.getJSONObject(i).getString("Body"));
+                System.out.print("body:" + comment.body);
                 //comment.body = array.getJSONObject(i).getString("Body");
                 comment.user = array.getJSONObject(i).getString("InsertName");
-                comment.date = array.getJSONObject(i).getString("DateInserted");
+                comment.date = parseDate(array.getJSONObject(i).getString("DateInserted"));
                 URL url = new URL(array.getJSONObject(i).getString("InsertPhoto"));
                 comment.icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 comment.max = max;
@@ -81,17 +86,24 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
     }
 
     public String parseBody(String body) {
-        Pattern pattern = Pattern.compile("(http://)\\S+");
+        //Pattern pattern = Pattern.compile("..https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{2,256}.[a-z]{2,4}\b([-a-zA-Z0-9@:%._+.~#//=]*)");
+        Pattern pattern = Pattern.compile("([\\s^])https?://.+");
         Matcher matcher = pattern.matcher(body);
+        String parsed=body;
         if(matcher.find()){
             for(int i = 0;i<matcher.groupCount();i++){
-                //String link = matcher.group
+                String link = matcher.group(i);
+                link = link.replace(" ","");
+                link = link.replace("\n","");
+                System.out.println("link:" + link);
+                System.out.println("link accepted:" + link);
+                parsed = body.replace(link, "<a href=\"" + link + "\">Link</a>");
             }
         }
 
-        //TODO Add links to plain text part. Maybe with regex....
+        //TODO Test above
 
-        Document doc = Jsoup.parse(body);
+        Document doc = Jsoup.parse(parsed);
         Elements images = doc.select("img[src]");
         for(org.jsoup.nodes.Element image : images){
             String link = image.attr("src");
@@ -101,5 +113,19 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
             image.text("Image");
         }
         return doc.html();
+    }
+
+    public String parseDate(String preDate){
+        String postDate="";
+        SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            Date date = format.parse(preDate);
+            format = new SimpleDateFormat("h:mma M/dd/yyyy");
+            postDate = format.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return postDate;
     }
 }

@@ -43,18 +43,14 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.comments, parent, false);
         }
         TextView name = (TextView) convertView.findViewById(R.id.firstLine);
-        TextView description = (TextView) convertView.findViewById(R.id.secondLine);
+        TextView date = (TextView) convertView.findViewById(R.id.secondLine);
         ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
         TextView body = (TextView) convertView.findViewById(R.id.body);
-        //WebView body = (WebView) convertView.findViewById(R.id.body);
         name.setText(comment.user);
-        description.setText(comment.date);
+        date.setText(comment.date);
         icon.setImageBitmap(comment.icon);
         body.setMovementMethod(LinkMovementMethod.getInstance());
-        System.out.print("html:" + comment.body);
         body.setText(Html.fromHtml(comment.body));
-        Linkify.addLinks(body,Linkify.ALL);
-
         return convertView;
     }
 
