@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <fragment android:name="org.superpichu.frcforums.discussionFragment"
+        android:id="@+id/discussions_fragment"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:layout="@layout/activity_main"
+        class="org.superpichu.frcforums.discussionFragment" />
+
+    <fragment android:name="org.superpichu.frcforums.commentFragment"
+        android:id="@+id/comment_fragment"
+        android:layout_weight="1.5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:layout="@layout/activity_discussion_view"
+        class="org.superpichu.frcforums.commentFragment" />
+</LinearLayout>

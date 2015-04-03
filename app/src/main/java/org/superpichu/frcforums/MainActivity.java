@@ -84,7 +84,7 @@ public class MainActivity extends ActionBarActivity {
         listView.setAdapter(adapter);
     }
 
-    public void next(View v){
+    public void nextT(View v){
         Intent intent = new Intent(this,MainActivity.class);
         int max = discussions.get(0).max;
         int start = Integer.parseInt(range.split("-")[1]);
@@ -102,7 +102,7 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void last(View v){
+    public void lastT(View v){
         Intent intent = new Intent(this,MainActivity.class);
         int end = discussions.get(0).max;
         int start = end - 20;
@@ -112,7 +112,7 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void prev(View v){
+    public void prevT(View v){
         Intent intent = new Intent(this,MainActivity.class);
         int end = Integer.parseInt(range.split("-")[0]);
         if(end <= 1){
@@ -129,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void first(View v){
+    public void firstT(View v){
         Intent intent = new Intent(this,MainActivity.class);
         int start = 1;
         int end = start + 20;
