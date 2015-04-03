@@ -1,17 +1,12 @@
 package org.superpichu.frcforums;
 
-import android.app.ListActivity;
-import android.app.Notification;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 
 public class discussionView extends ActionBarActivity {
@@ -25,7 +20,7 @@ public class discussionView extends ActionBarActivity {
         id = intent.getStringExtra("id");
         range = intent.getStringExtra("range");
         String[] data = {id,range};
-        ListView listView = (ListView)findViewById(R.id.listView);
+        ListView listView = (ListView)findViewById(R.id.listView2);
         try {
             comments = new getCommentArray().execute(data).get();
         }catch (Exception e) {
