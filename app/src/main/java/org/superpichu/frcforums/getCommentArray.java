@@ -1,24 +1,18 @@
 package org.superpichu.frcforums;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.renderscript.Element;
-import android.text.util.Linkify;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.ParseException;
@@ -95,8 +89,6 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 String link = matcher.group(i);
                 link = link.replace(" ","");
                 link = link.replace("\n","");
-                System.out.println("link:" + link);
-                System.out.println("link accepted:" + link);
                 parsed = body.replace(link, "<a href=\"" + link + "\">Link</a>");
             }
         }

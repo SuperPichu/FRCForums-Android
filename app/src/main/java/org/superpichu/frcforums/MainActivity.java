@@ -1,8 +1,8 @@
 package org.superpichu.frcforums;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,7 +11,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-//TODO Add loading spinner/gif
+//TODO Add loading spinner/gif (make the gif)
+//TODO Rewrite UI to use fragment handling and ListView updating
 public class MainActivity extends ActionBarActivity {
     ArrayList<Discussion> discussions;
     ArrayList<Comment> comments;
