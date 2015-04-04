@@ -1,12 +1,9 @@
 package org.superpichu.frcforums;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.webkit.WebView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -24,9 +21,18 @@ import java.util.ArrayList;
  */
 
 public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discussion>> {
+    private discussionFragment fragment;
+    public getDiscussionArray(discussionFragment fragment){
+        this.fragment = fragment;
+    }
     @Override
     protected void onPreExecute(){
-    }
+        fragment.dialog.show();
+        fragment.dialog.setContentView(R.layout.loading);
+        WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
+        webView.setInitialScale(100);
+        webView.loadUrl("file:///android_res/drawable/loading.gif");
+        }
     @Override
     protected ArrayList<Discussion> doInBackground(String... params) {
         ArrayList<Discussion> discussions = new ArrayList<Discussion>();
@@ -76,7 +82,12 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Discussion> discussions1) {
-
+    protected void onPostExecute(ArrayList<Discussion> discussions) {
+        if(fragment.dialog.isShowing()){
+            fragment.dialog.dismiss();
+        }
+        fragment.adapter = new discussionAdapter(fragment.getActivity(),discussions,fragment.getResources());
+        fragment.adapter.notifyDataSetChanged();
+        fragment.setListAdapter(fragment.adapter);
     }
 }

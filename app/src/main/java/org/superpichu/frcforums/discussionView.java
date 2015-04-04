@@ -1,10 +1,9 @@
 package org.superpichu.frcforums;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -20,15 +19,15 @@ public class discussionView extends ActionBarActivity {
         id = intent.getStringExtra("id");
         range = intent.getStringExtra("range");
         String[] data = {id,range};
-        ListView listView = (ListView)findViewById(R.id.listView2);
+        //ListView listView = (ListView)findViewById(R.id.listView2);
         try {
-            comments = new getCommentArray().execute(data).get();
+            //comments = new getCommentArray().execute(data).get();
         }catch (Exception e) {
             e.printStackTrace();
         }
         setTitle(comments.get(0).thread);
-        CommentAdapter adapter = new CommentAdapter(this,comments);
-        listView.setAdapter(adapter);
+        commentAdapter adapter = new commentAdapter(this,comments);
+        //listView.setAdapter(adapter);
     }
 
 

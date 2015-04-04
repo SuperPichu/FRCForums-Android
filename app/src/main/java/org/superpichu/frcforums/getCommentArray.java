@@ -2,6 +2,7 @@ package org.superpichu.frcforums;
 
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.webkit.WebView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -27,6 +28,27 @@ import java.util.regex.Pattern;
  * Created by chris on 4/1/15.
  */
 public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment>> {
+    private commentFragment fragment;
+    public getCommentArray(commentFragment fragment){
+        this.fragment = fragment;
+    }
+    @Override
+    protected void onPreExecute(){
+        fragment.dialog.show();
+        fragment.dialog.setContentView(R.layout.loading);
+        WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
+        webView.setInitialScale(100);
+        webView.loadUrl("file:///android_res/drawable/loading.gif");
+    }
+    @Override
+    protected void onPostExecute(ArrayList<Comment> comments){
+        if(fragment.dialog.isShowing()){
+            fragment.dialog.dismiss();
+        }
+        fragment.adapter = new commentAdapter(fragment.getActivity(),comments);
+        fragment.adapter.notifyDataSetChanged();
+        fragment.setListAdapter(fragment.adapter);
+    }
     @Override
     protected ArrayList<Comment> doInBackground(String[]... params) {
         String[] data = params[0];
@@ -49,7 +71,6 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 Comment first = new Comment();
                 first.max = max;
                 first.body = parseBody(discussion.getString("Body"));
-                //first.body = discussion.getString("Body");
                 first.user = discussion.getString("InsertName");
                 first.date = parseDate(discussion.getString("DateInserted"));
                 URL url = new URL(discussion.getString("InsertPhoto"));
@@ -61,8 +82,6 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 Comment comment = new Comment();
                 comment.id = array.getJSONObject(i).getInt("CommentID");
                 comment.body = parseBody(array.getJSONObject(i).getString("Body"));
-                System.out.print("body:" + comment.body);
-                //comment.body = array.getJSONObject(i).getString("Body");
                 comment.user = array.getJSONObject(i).getString("InsertName");
                 comment.date = parseDate(array.getJSONObject(i).getString("DateInserted"));
                 URL url = new URL(array.getJSONObject(i).getString("InsertPhoto"));
@@ -80,7 +99,6 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
     }
 
     public String parseBody(String body) {
-        //Pattern pattern = Pattern.compile("..https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{2,256}.[a-z]{2,4}\b([-a-zA-Z0-9@:%._+.~#//=]*)");
         Pattern pattern = Pattern.compile("([\\s^])https?://.+");
         Matcher matcher = pattern.matcher(body);
         String parsed=body;
@@ -92,8 +110,6 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 parsed = body.replace(link, "<a href=\"" + link + "\">Link</a>");
             }
         }
-
-        //TODO Test above
 
         Document doc = Jsoup.parse(parsed);
         Elements images = doc.select("img[src]");

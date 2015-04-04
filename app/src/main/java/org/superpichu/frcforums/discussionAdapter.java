@@ -19,22 +19,30 @@ import java.util.ArrayList;
 public class discussionAdapter extends ArrayAdapter<Discussion>{
     Resources resources;
     public discussionAdapter(Context context, ArrayList<Discussion> discussions, Resources resources2){
-        super(context,0,discussions);
+        super(context,R.layout.discussions,discussions);
         resources =resources2;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Discussion discussion = getItem(position);
+        ViewHolder viewHolder;
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.discussions, parent, false);
+
+            viewHolder = new ViewHolder();
+            viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
+            viewHolder.title = (TextView) convertView.findViewById(R.id.firstLine);
+            viewHolder.description = (TextView) convertView.findViewById(R.id.secondLine);
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder = (ViewHolder)convertView.getTag();
         }
-        TextView name = (TextView) convertView.findViewById(R.id.firstLine);
-        TextView description = (TextView) convertView.findViewById(R.id.secondLine);
-        ImageView icon = (ImageView) convertView.findViewById(R.id.icon);
-        name.setText(Html.fromHtml(discussion.name, new ImageGetter(),null));
-        description.setText(discussion.description);
-        icon.setImageBitmap(discussion.icon);
+        Discussion discussion = getItem(position);
+        viewHolder.title.setText((Html.fromHtml(discussion.name,new ImageGetter(), null)));
+        viewHolder.description.setText(discussion.description);
+        viewHolder.icon.setImageBitmap(discussion.icon);
+        notifyDataSetChanged();
         return convertView;
     }
 
@@ -54,5 +62,12 @@ public class discussionAdapter extends ArrayAdapter<Discussion>{
             return d;
         }
     };
+
+
+    private static class ViewHolder {
+        ImageView icon;
+        TextView title;
+        TextView description;
+    }
 
 }
