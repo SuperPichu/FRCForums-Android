@@ -33,10 +33,8 @@ public class commentFragment extends ListFragment {
 
         try {
             range="1-20";
-            id="902";
             dialog = new Dialog(getActivity());
             dialog.setContentView(R.layout.loading);
-            getComments(range,id);
         }catch (Exception e){
             e.printStackTrace();
         }
