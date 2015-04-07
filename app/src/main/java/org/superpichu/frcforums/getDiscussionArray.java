@@ -3,7 +3,6 @@ package org.superpichu.frcforums;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.webkit.WebView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -29,9 +28,9 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
     protected void onPreExecute(){
         fragment.dialog.show();
         fragment.dialog.setContentView(R.layout.loading);
-        WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
-        webView.setInitialScale(100);
-        webView.loadUrl("file:///android_res/drawable/loading.gif");
+        //WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
+        //webView.setInitialScale(100);
+        //webView.loadUrl("file:///android_res/drawable/loading.gif");
         }
     @Override
     protected ArrayList<Discussion> doInBackground(String... params) {

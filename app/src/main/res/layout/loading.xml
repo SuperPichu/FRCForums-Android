@@ -4,21 +4,22 @@
     android:layout_height="wrap_content"
     android:id="@+id/loadingRelative">
 
-    <WebView
-        android:layout_width="196dp"
-        android:layout_height="196dp"
-        android:id="@+id/webView"
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/loading"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/view"
+        android:layout_centerInParent="true" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Loading?"
-        android:textSize="50dp"
+        android:text="Loading..."
+        android:textSize="30dp"
         android:id="@+id/textView"
-        android:layout_below="@+id/webView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/view"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

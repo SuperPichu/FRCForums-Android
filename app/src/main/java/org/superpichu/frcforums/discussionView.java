@@ -3,31 +3,20 @@ package org.superpichu.frcforums;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.View;
-
-import java.util.ArrayList;
 
 
 public class discussionView extends ActionBarActivity {
-    ArrayList<Comment> comments;
-    String id,range;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_discussion_view);
+        setContentView(R.layout.discussion_view);
         Intent intent = getIntent();
-        id = intent.getStringExtra("id");
-        range = intent.getStringExtra("range");
-        String[] data = {id,range};
-        //ListView listView = (ListView)findViewById(R.id.listView2);
-        try {
-            //comments = new getCommentArray().execute(data).get();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        setTitle(comments.get(0).thread);
-        commentAdapter adapter = new commentAdapter(this,comments);
-        //listView.setAdapter(adapter);
+        String id = intent.getStringExtra("id");
+        String title = intent.getStringExtra("title");
+        setTitle(title);
+        commentFragment fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);        fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);
+        fragment.getComments("1-20", id);
+
     }
 
 
@@ -52,63 +41,4 @@ public class discussionView extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }*/
-
-    public void next(View v){
-        Intent intent = new Intent(this,discussionView.class);
-        intent.putExtra("id",id);
-        int max = comments.get(0).max;
-        int start = Integer.parseInt(range.split("-")[1]);
-        if(start == max){
-            start = max - 20;
-        }
-        int end = start+20;
-        if(end > max){
-            end = max;
-        }
-        start++;
-        range = start+"-"+end;
-        intent.putExtra("range",range);
-        finish();
-        startActivity(intent);
-    }
-
-    public void last(View v){
-        Intent intent = new Intent(this,discussionView.class);
-        intent.putExtra("id",id);
-        int end = comments.get(0).max;
-        int start = end - 20;
-        range = start+"-"+end;
-        intent.putExtra("range",range);
-        finish();
-        startActivity(intent);
-    }
-
-    public void prev(View v){
-        Intent intent = new Intent(this,discussionView.class);
-        intent.putExtra("id",id);
-        int end = Integer.parseInt(range.split("-")[0]);
-        if(end <= 1){
-            end = 21;
-        }
-        int start = end - 20;
-        if(start < 1){
-            start = 1;
-        }
-        end--;
-        range = start+"-"+end;
-        intent.putExtra("range",range);
-        finish();
-        startActivity(intent);
-    }
-
-    public void first(View v){
-        Intent intent = new Intent(this,discussionView.class);
-        intent.putExtra("id",id);
-        int start = 1;
-        int end = start + 20;
-        range = start+"-"+end;
-        intent.putExtra("range",range);
-        finish();
-        startActivity(intent);
-    }
 }

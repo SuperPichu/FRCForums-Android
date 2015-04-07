@@ -31,16 +31,23 @@ public class commentAdapter extends ArrayAdapter<Comment> {
             viewHolder.name = (TextView) convertView.findViewById(R.id.firstLine);
             viewHolder.date = (TextView) convertView.findViewById(R.id.secondLine);
             viewHolder.body = (TextView) convertView.findViewById(R.id.body);
+            Comment comment = getItem(position);
+            viewHolder.name.setText(comment.user);
+            viewHolder.date.setText(comment.date);
+            viewHolder.icon.setImageBitmap(comment.icon);
+            viewHolder.body.setText(Html.fromHtml(comment.body));
+            viewHolder.body.setMovementMethod(LinkMovementMethod.getInstance());
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder)convertView.getTag();
+            Comment comment = getItem(position);
+            viewHolder.name.setText(comment.user);
+            viewHolder.date.setText(comment.date);
+            viewHolder.icon.setImageBitmap(comment.icon);
+            viewHolder.body.setText(Html.fromHtml(comment.body));
+            viewHolder.body.setMovementMethod(LinkMovementMethod.getInstance());
         }
-        Comment comment = getItem(position);
-        viewHolder.name.setText(comment.user);
-        viewHolder.date.setText(comment.date);
-        viewHolder.icon.setImageBitmap(comment.icon);
-        viewHolder.body.setMovementMethod(LinkMovementMethod.getInstance());
-        viewHolder.body.setText(Html.fromHtml(comment.body));
+
         notifyDataSetChanged();
         return convertView;
     }

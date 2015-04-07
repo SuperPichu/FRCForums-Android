@@ -8,5 +8,5 @@
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
     <item name="fragment_item" type="layout">@layout/main_view</item>
-
+    <bool name="isTablet">false</bool>
 </resources>

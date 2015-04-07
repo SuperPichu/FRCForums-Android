@@ -2,7 +2,6 @@ package org.superpichu.frcforums;
 
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.webkit.WebView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -36,9 +35,9 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
     protected void onPreExecute(){
         fragment.dialog.show();
         fragment.dialog.setContentView(R.layout.loading);
-        WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
-        webView.setInitialScale(100);
-        webView.loadUrl("file:///android_res/drawable/loading.gif");
+        //WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
+        //webView.setInitialScale(100);
+        //webView.loadUrl("file:///android_res/drawable/loading.gif");
     }
     @Override
     protected void onPostExecute(ArrayList<Comment> comments){
@@ -82,6 +81,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 Comment comment = new Comment();
                 comment.id = array.getJSONObject(i).getInt("CommentID");
                 comment.body = parseBody(array.getJSONObject(i).getString("Body"));
+                //comment.body = array.getJSONObject(i).getString("Body");
                 comment.user = array.getJSONObject(i).getString("InsertName");
                 comment.date = parseDate(array.getJSONObject(i).getString("DateInserted"));
                 URL url = new URL(array.getJSONObject(i).getString("InsertPhoto"));

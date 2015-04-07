@@ -3,7 +3,6 @@ package org.superpichu.frcforums;
 import android.app.Dialog;
 import android.app.ListFragment;
 import android.content.res.Resources;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,7 @@ public class commentFragment extends ListFragment {
         try {
             range="1-20";
             //id="902";
-            //getComments(range,id);
+            getComments(range,id);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -45,8 +44,6 @@ public class commentFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getListView().setDivider(new ColorDrawable(64000000));
-        getListView().setDividerHeight(1);
         Button nextC = (Button)view.findViewById(R.id.nextC);
         Button prevC = (Button)view.findViewById(R.id.prevC);
         Button firstC = (Button)view.findViewById(R.id.firstC);
@@ -55,6 +52,8 @@ public class commentFragment extends ListFragment {
         prevC.setOnClickListener(prevActionC);
         firstC.setOnClickListener(firstActionC);
         lastC.setOnClickListener(lastActionC);
+        //TextView body = (TextView)getListView().
+        //body.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public View.OnClickListener nextActionC = new View.OnClickListener() {
@@ -134,6 +133,7 @@ public class commentFragment extends ListFragment {
     };
 
     public void getComments(String range, String dId){
+        //Activity activity1 = getActivity();
         Resources resources = getResources();
         dialog = new Dialog(getActivity());
         this.id = dId;

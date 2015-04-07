@@ -10,6 +10,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 //TODO Add portrait layout
+//TODO find a better way to show gifs
 public class MainActivity extends ActionBarActivity implements discussionFragment.OnThreadSelectedListener {
     ArrayList<Discussion> discussions;
     ArrayList<Comment> comments;
@@ -53,9 +54,20 @@ public class MainActivity extends ActionBarActivity implements discussionFragmen
     }
 
     @Override
-    public void OnThreadSelected(String id) {
+    public void OnThreadSelected(String id, String title) {
         System.out.println(id);
-        commentFragment fragment = (commentFragment)getFragmentManager().findFragmentById(R.id.comments_fragment);
-        fragment.getComments("1-20",id);
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+        if(isTablet) {
+            commentFragment fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);
+            System.out.println("tablet");
+            fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);
+            fragment.getComments("1-20", id);
+        }else {
+            System.out.println("phone");
+            Intent intent = new Intent(this, org.superpichu.frcforums.discussionView.class);
+            intent.putExtra("title", title);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        }
     }
 }

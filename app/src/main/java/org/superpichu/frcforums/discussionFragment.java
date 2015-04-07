@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListFragment;
 import android.content.res.Resources;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,7 @@ public class discussionFragment extends ListFragment {
     OnThreadSelectedListener listener;
 
     public interface OnThreadSelectedListener{
-        public void OnThreadSelected(String id);
+        public void OnThreadSelected(String id, String title);
     }
 
     @Override
@@ -58,8 +57,6 @@ public class discussionFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getListView().setDivider(new ColorDrawable(64000000));
-        getListView().setDividerHeight(1);
         Button next = (Button)view.findViewById(R.id.next);
         Button prev = (Button)view.findViewById(R.id.prev);
         Button first = (Button)view.findViewById(R.id.first);
@@ -78,8 +75,11 @@ public class discussionFragment extends ListFragment {
         if(title.contains("<")){
             title = title.split("<")[0];
         }
-        getActivity().setTitle(title);
-        listener.OnThreadSelected(dId);
+        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+        if(isTablet) {
+            getActivity().setTitle(title);
+        }
+        listener.OnThreadSelected(dId,title);
         System.out.println(dId);
         //Toast.makeText(getActivity(), item.name, Toast.LENGTH_SHORT).show();
     }
