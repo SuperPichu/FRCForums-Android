@@ -9,8 +9,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-//TODO Add portrait layout
-//TODO find a better way to show gifs
+
+//TODO Posting
 public class MainActivity extends ActionBarActivity implements discussionFragment.OnThreadSelectedListener {
     ArrayList<Discussion> discussions;
     ArrayList<Comment> comments;
