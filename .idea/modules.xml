@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FRCForums.iml" filepath="$PROJECT_DIR$/FRCForums.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/html-textview/html-textview.iml" filepath="$PROJECT_DIR$/html-textview/html-textview.iml" />
     </modules>
   </component>
 </project>

@@ -115,6 +115,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 parsed = body.replace(link, "<a href=\"" + link + "\">Link</a>");
             }
         }
+        parsed = parsed.replace("\n","<br>");
 
         Document doc = Jsoup.parse(parsed);
         Elements images = doc.select("img[src]");

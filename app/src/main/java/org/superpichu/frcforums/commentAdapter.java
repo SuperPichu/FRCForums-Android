@@ -1,7 +1,6 @@
 package org.superpichu.frcforums;
 
 import android.content.Context;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.ArrayList;
 
@@ -30,12 +31,12 @@ public class commentAdapter extends ArrayAdapter<Comment> {
             viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             viewHolder.name = (TextView) convertView.findViewById(R.id.firstLine);
             viewHolder.date = (TextView) convertView.findViewById(R.id.secondLine);
-            viewHolder.body = (TextView) convertView.findViewById(R.id.body);
+            viewHolder.body = (HtmlTextView) convertView.findViewById(R.id.body);
             Comment comment = getItem(position);
             viewHolder.name.setText(comment.user);
             viewHolder.date.setText(comment.date);
             viewHolder.icon.setImageBitmap(comment.icon);
-            viewHolder.body.setText(Html.fromHtml(comment.body));
+            viewHolder.body.setHtmlFromString(comment.body,false);
             viewHolder.body.setMovementMethod(LinkMovementMethod.getInstance());
             convertView.setTag(viewHolder);
         }else{
@@ -44,7 +45,7 @@ public class commentAdapter extends ArrayAdapter<Comment> {
             viewHolder.name.setText(comment.user);
             viewHolder.date.setText(comment.date);
             viewHolder.icon.setImageBitmap(comment.icon);
-            viewHolder.body.setText(Html.fromHtml(comment.body));
+            viewHolder.body.setHtmlFromString(comment.body, false);
             viewHolder.body.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
@@ -55,6 +56,6 @@ public class commentAdapter extends ArrayAdapter<Comment> {
         ImageView icon;
         TextView name;
         TextView date;
-        TextView body;
+        HtmlTextView body;
     }
 }
