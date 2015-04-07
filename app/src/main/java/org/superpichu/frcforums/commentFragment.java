@@ -33,7 +33,9 @@ public class commentFragment extends ListFragment {
 
         try {
             range="1-20";
-            //id="902";
+            id="902";
+            dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.loading);
             getComments(range,id);
         }catch (Exception e){
             e.printStackTrace();
@@ -135,7 +137,6 @@ public class commentFragment extends ListFragment {
     public void getComments(String range, String dId){
         //Activity activity1 = getActivity();
         Resources resources = getResources();
-        dialog = new Dialog(getActivity());
         this.id = dId;
         getCommentArray task = new getCommentArray(this);
         String[] data = {dId, range};

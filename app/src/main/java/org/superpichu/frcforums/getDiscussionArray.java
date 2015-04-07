@@ -26,7 +26,9 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
     }
     @Override
     protected void onPreExecute(){
-        fragment.dialog.show();
+        if(!fragment.dialog.isShowing()){
+            fragment.dialog.show();
+        }
         fragment.dialog.setContentView(R.layout.loading);
         //WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
         //webView.setInitialScale(100);

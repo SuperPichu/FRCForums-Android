@@ -33,8 +33,10 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
     }
     @Override
     protected void onPreExecute(){
-        fragment.dialog.show();
-        fragment.dialog.setContentView(R.layout.loading);
+        if(!fragment.dialog.isShowing()){
+            fragment.dialog.show();
+            System.out.println("Show");
+        }
         //WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
         //webView.setInitialScale(100);
         //webView.loadUrl("file:///android_res/drawable/loading.gif");
@@ -43,7 +45,10 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
     protected void onPostExecute(ArrayList<Comment> comments){
         if(fragment.dialog.isShowing()){
             fragment.dialog.dismiss();
+            System.out.println("Hide");
         }
+        System.out.println("Post");
+
         fragment.adapter = new commentAdapter(fragment.getActivity(),comments);
         fragment.adapter.notifyDataSetChanged();
         fragment.setListAdapter(fragment.adapter);
