@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
@@ -125,6 +126,11 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
             image.removeAttr("src");
             image.attr("href",link);
             image.text("Image");
+        }
+        Elements quotes = doc.select("blockquote[rel]");
+        for(Element quote : quotes){
+            String source = quote.attr("rel");
+            quote.before(source+" said:");
         }
         return doc.html();
     }

@@ -28,6 +28,7 @@ public class commentAdapter extends ArrayAdapter<Comment> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.comments, parent, false);
             viewHolder = new ViewHolder();
+            convertView.setTag(viewHolder);
             viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
             viewHolder.name = (TextView) convertView.findViewById(R.id.firstLine);
             viewHolder.date = (TextView) convertView.findViewById(R.id.secondLine);
@@ -38,7 +39,6 @@ public class commentAdapter extends ArrayAdapter<Comment> {
             viewHolder.icon.setImageBitmap(comment.icon);
             viewHolder.body.setHtmlFromString(comment.body,false);
             viewHolder.body.setMovementMethod(LinkMovementMethod.getInstance());
-            convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder)convertView.getTag();
             Comment comment = getItem(position);

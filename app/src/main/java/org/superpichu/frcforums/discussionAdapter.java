@@ -39,7 +39,7 @@ public class discussionAdapter extends ArrayAdapter<Discussion>{
             viewHolder = (ViewHolder)convertView.getTag();
         }
         Discussion discussion = getItem(position);
-        viewHolder.title.setText((Html.fromHtml(discussion.name,new ImageGetter(), null)));
+        viewHolder.title.setText(Html.fromHtml(discussion.name,new ImageGetter(),null));
         viewHolder.description.setText(discussion.description);
         viewHolder.icon.setImageBitmap(discussion.icon);
         notifyDataSetChanged();
@@ -58,7 +58,7 @@ public class discussionAdapter extends ArrayAdapter<Discussion>{
             }
 
             Drawable d = resources.getDrawable(id);
-            d.setBounds(0,0,64,64);
+            d.setBounds(0,0,240,48);
             return d;
         }
     };
