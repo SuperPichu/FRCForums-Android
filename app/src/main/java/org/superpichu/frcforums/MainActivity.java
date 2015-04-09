@@ -10,7 +10,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-//TODO Posting
+//TODO Posting quotes and better input box
 public class MainActivity extends ActionBarActivity implements discussionFragment.OnThreadSelectedListener {
     ArrayList<Discussion> discussions;
     ArrayList<Comment> comments;
