@@ -63,7 +63,7 @@ public class addPost extends AsyncTask<String[], Void, Void> {
             List<NameValuePair> loginParams =
                     getFormParams(page, user, pass);
             sendPost(url, loginParams);
-            String page2 = GetPageContent("http://forum.frontrowcrew.com/discussion/" + id);
+            String page2 = GetPageContent("http://forum.frontrowcrew.com/discussion/" + id+"/");
 
             List<NameValuePair> postParams = getPostParams(page2, id, body);
             postUrl = postUrl + id;
@@ -93,7 +93,9 @@ public class addPost extends AsyncTask<String[], Void, Void> {
 
         HttpResponse response = client.execute(post);
         int responseCode = response.getStatusLine().getStatusCode();
-
+        System.out.println("\nSending 'POST' request to URL : " + url);
+        System.out.println("Post parameters : " + postParams);
+        System.out.println("Response Code : " + responseCode);
         BufferedReader rd = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));
 
@@ -102,6 +104,7 @@ public class addPost extends AsyncTask<String[], Void, Void> {
         while ((line = rd.readLine()) != null) {
             result.append(line);
         }
+        System.out.println(result);
         setCookies(response.getFirstHeader("Cookie") == null ? "" :
                 response.getFirstHeader("Cookie").toString());
 
@@ -125,6 +128,9 @@ public class addPost extends AsyncTask<String[], Void, Void> {
         post.setEntity(new UrlEncodedFormEntity(postParams));
         HttpResponse response = client.execute(post);
         int responseCode = response.getStatusLine().getStatusCode();
+
+        System.out.println("Post parameters : " + postParams);
+        System.out.println("Response Code : " + responseCode);
 
 
 
@@ -151,6 +157,8 @@ public class addPost extends AsyncTask<String[], Void, Void> {
 
         HttpResponse response = client.execute(request);
         int responseCode = response.getStatusLine().getStatusCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
 
         BufferedReader rd = new BufferedReader(
                 new InputStreamReader(response.getEntity().getContent()));

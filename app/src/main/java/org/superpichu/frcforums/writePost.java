@@ -1,7 +1,5 @@
 package org.superpichu.frcforums;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import java.io.File;
 
 
 public class writePost extends ActionBarActivity {
@@ -42,21 +45,22 @@ public class writePost extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_post) {
-            AccountManager manager = AccountManager.get(this);
-            if (manager.getAccountsByType("org.superpichu.frcforums").length > 0){
-                Account account = manager.getAccountsByType("org.superpichu.frcforums")[0];
-                String user = account.name;
-                String pass = manager.getPassword(account);
-                String bodyText = String.valueOf(body.getText());
-                addPost post = new addPost(dialog);
-                String[] data = {dId,bodyText,user,pass};
+            File xml = new File(getFilesDir().getPath() + "/login.xml");
+            if(xml.exists()) {
+                Credentials credentials  = new Credentials();
                 try {
+                    Serializer serializer = new Persister();
+                    credentials = serializer.read(Credentials.class,xml);
+                    String bodyText = String.valueOf(body.getText());
+                    addPost post = new addPost(dialog);
+                    String[] data = {dId, bodyText, credentials.getUser(), credentials.getPass()};
                     post.execute(data);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                finish();
             }else{
-                Toast.makeText(this,"You must login first",Toast.LENGTH_SHORT);
+                Toast.makeText(this,"Login First!",Toast.LENGTH_LONG);
             }
             finish();
         }
