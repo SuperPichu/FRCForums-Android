@@ -124,8 +124,7 @@ public class commentFragment extends ListFragment {
             try{
                 Comment item = (Comment)getListAdapter().getItem(0);
                 int end = item.max;
-                int start = Integer.parseInt(range.split("-")[1]);
-                start++;
+                int start = end - 20;
                 range = start+"-"+end;
                 getComments(range, id);
             }catch (Exception e){
