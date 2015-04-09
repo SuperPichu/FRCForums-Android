@@ -48,6 +48,10 @@ public class MainActivity extends ActionBarActivity implements discussionFragmen
             finish();
             startActivity(intent);
             return true;
+        }else if(id == R.id.action_login){
+                Intent intent = new Intent(this,LoginActivity.class);
+                startActivity(intent);
+
         }
 
         return super.onOptionsItemSelected(item);

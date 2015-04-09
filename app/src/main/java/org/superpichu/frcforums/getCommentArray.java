@@ -36,7 +36,6 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
     protected void onPreExecute(){
         if(!fragment.dialog.isShowing()){
             fragment.dialog.show();
-            System.out.println("Show");
         }
         //WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
         //webView.setInitialScale(100);

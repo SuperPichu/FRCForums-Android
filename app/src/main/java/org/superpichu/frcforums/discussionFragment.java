@@ -105,7 +105,6 @@ public class discussionFragment extends ListFragment {
 
             }catch (Exception e){
             }
-            System.out.println("Discussion");
         }
     };
 
@@ -127,7 +126,6 @@ public class discussionFragment extends ListFragment {
 
             }catch (Exception e){
             }
-            System.out.println("Discussion");
 
         }
     };
@@ -140,7 +138,6 @@ public class discussionFragment extends ListFragment {
                 getDiscussions();
             }catch (Exception e){
             }
-            System.out.println("Discussion");
 
         }
     };
@@ -151,12 +148,12 @@ public class discussionFragment extends ListFragment {
             try{
                 Discussion item = (Discussion)getListAdapter().getItem(0);
                 int end = item.max;
-                int start = end - 20;
+                int start = Integer.parseInt(range.split("-")[1]);
+                start++;
                 range = start+"-"+end;
                 getDiscussions();
             }catch (Exception e){
             }
-            System.out.println("Discussion");
 
         }
     };

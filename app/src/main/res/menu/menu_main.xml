@@ -5,4 +5,6 @@
         android:title="refresh"
         android:icon="@drawable/refresh"
         app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_login" android:title="Login"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

@@ -2,6 +2,7 @@ package org.superpichu.frcforums;
 
 import android.app.Dialog;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -48,10 +49,12 @@ public class commentFragment extends ListFragment {
         Button prevC = (Button)view.findViewById(R.id.prevC);
         Button firstC = (Button)view.findViewById(R.id.firstC);
         Button lastC = (Button)view.findViewById(R.id.lastC);
+        Button post = (Button)view.findViewById(R.id.post);
         nextC.setOnClickListener(nextActionC);
         prevC.setOnClickListener(prevActionC);
         firstC.setOnClickListener(firstActionC);
         lastC.setOnClickListener(lastActionC);
+        post.setOnClickListener(postComment);
         //TextView body = (TextView)getListView().
         //body.setMovementMethod(LinkMovementMethod.getInstance());
     }
@@ -72,7 +75,6 @@ public class commentFragment extends ListFragment {
                 }
                 start++;
                 range = start+"-"+end;
-                System.out.println(id);
                 getComments(range, id);
             }catch (Exception e){
                 e.printStackTrace();
@@ -122,7 +124,8 @@ public class commentFragment extends ListFragment {
             try{
                 Comment item = (Comment)getListAdapter().getItem(0);
                 int end = item.max;
-                int start = end - 20;
+                int start = Integer.parseInt(range.split("-")[1]);
+                start++;
                 range = start+"-"+end;
                 getComments(range, id);
             }catch (Exception e){
@@ -140,4 +143,18 @@ public class commentFragment extends ListFragment {
         String[] data = {dId, range};
         task.execute(data);
     }
+
+    public View.OnClickListener postComment = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            try{
+                Intent intent = new Intent(getActivity(), writePost.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+    };
 }
