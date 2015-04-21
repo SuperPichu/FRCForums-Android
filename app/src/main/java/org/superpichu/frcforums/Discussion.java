@@ -14,12 +14,10 @@ public class Discussion {
     public Bitmap icon;
     public ArrayList<Comment> comments;
     public int max;
+    public boolean read = true;
+    public int unreadCount;
+    public int commentMax;
 
-    public Discussion(String name, String description,int id,Bitmap icon,int max){
-        this.name = name;
-        this.description = description;
-        this.id = id;
-        this.icon = icon;
-        this.max = max;
+    public Discussion(){
     }
 }

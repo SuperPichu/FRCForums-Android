@@ -15,6 +15,8 @@ import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +31,7 @@ import java.util.regex.Pattern;
  */
 public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment>> {
     private commentFragment fragment;
+    private final String USER_AGENT = "Mozilla/5.0";
     public getCommentArray(commentFragment fragment){
         this.fragment = fragment;
     }
@@ -45,10 +48,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
     protected void onPostExecute(ArrayList<Comment> comments){
         if(fragment.dialog.isShowing()){
             fragment.dialog.dismiss();
-            System.out.println("Hide");
         }
-        System.out.println("Post");
-
         fragment.adapter = new commentAdapter(fragment.getActivity(),comments);
         fragment.adapter.notifyDataSetChanged();
         fragment.setListAdapter(fragment.adapter);
@@ -59,8 +59,16 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
         String discussionId = data[0];
         String range = data[1];
         ArrayList<Comment> comments = new ArrayList<Comment>();
-        DefaultHttpClient defaultClient = new DefaultHttpClient();
-        HttpGet get = new HttpGet("http://forum.frontrowcrew.com/discussion.json?DiscussionID="+discussionId+"&page="+range);
+        DefaultHttpClient defaultClient = Global.defaultClient;
+        HttpGet get = new HttpGet("http://forum.frontrowcrew.com/discussion.json/"+discussionId+"/1"+range);
+        CookieHandler.setDefault(new CookieManager());
+        get.setHeader("Host", "forum.frontrowcrew.com");
+        get.setHeader("User-Agent", USER_AGENT);
+        get.setHeader("Accept",
+                "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+        get.setHeader("Accept-Language", "en-US,en;q=0.5");
+        get.setHeader("Cookie", getCookies());
+        get.setHeader("Connection", "keep-alive");
         HttpResponse response = null;
         try {
             response = defaultClient.execute(get);
@@ -80,19 +88,20 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 URL url = new URL(discussion.getString("InsertPhoto"));
                 first.icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 first.thread = title;
+                first.page = json.getInt("Page");
                 comments.add(first);
             }
             for(int i = 0;i<array.length();i++){
                 Comment comment = new Comment();
                 comment.id = array.getJSONObject(i).getInt("CommentID");
                 comment.body = parseBody(array.getJSONObject(i).getString("Body"));
-                //comment.body = array.getJSONObject(i).getString("Body");
                 comment.user = array.getJSONObject(i).getString("InsertName");
                 comment.date = parseDate(array.getJSONObject(i).getString("DateInserted"));
                 URL url = new URL(array.getJSONObject(i).getString("InsertPhoto"));
                 comment.icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 comment.max = max;
                 comment.thread = title;
+                comment.page = json.getInt("Page");
                 comments.add(comment);
             }
 
@@ -146,5 +155,13 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
             e.printStackTrace();
         }
         return postDate;
+    }
+
+    public String getCookies() {
+        return Global.cookies;
+    }
+
+    public void setCookies(String cookies) {
+        Global.cookies = cookies;
     }
 }

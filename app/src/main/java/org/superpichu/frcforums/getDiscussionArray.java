@@ -1,6 +1,5 @@
 package org.superpichu.frcforums;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
@@ -12,6 +11,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discussion>> {
     private discussionFragment fragment;
+    private final String USER_AGENT = "Mozilla/5.0";
     public getDiscussionArray(discussionFragment fragment){
         this.fragment = fragment;
     }
@@ -39,41 +41,72 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
         ArrayList<Discussion> discussions = new ArrayList<Discussion>();
         String range = params[0];
         try{
-            DefaultHttpClient defaultClient = new DefaultHttpClient();
-            HttpGet get = new HttpGet("http://forum.frontrowcrew.com/api/v1/discussions/list.json?page="+range);
+            DefaultHttpClient defaultClient = Global.defaultClient;
+            HttpGet get = new HttpGet("http://forum.frontrowcrew.com/discussions.json?page="+range);
+            CookieHandler.setDefault(new CookieManager());
+            get.setHeader("Host", "forum.frontrowcrew.com");
+            get.setHeader("User-Agent", USER_AGENT);
+            get.setHeader("Accept",
+                    "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+            get.setHeader("Accept-Language", "en-US,en;q=0.5");
+            get.setHeader("Cookie", getCookies());
+            get.setHeader("Connection", "keep-alive");
             HttpResponse response = defaultClient.execute(get);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"UTF-8"));
             String result = reader.readLine();
             JSONObject json = new JSONObject(result);
-            int max = json.getInt("CountDiscussions");
+
             if(range.startsWith("1-")){
                 JSONArray array1 = json.getJSONArray("Announcements");
                 for(int i = 0;i<array1.length();i++) {
-                    int id = array1.getJSONObject(i).getInt("DiscussionID");
-                    String name = array1.getJSONObject(i).getString("Name")+" <img src=\"announce.png\">";
+                    Discussion discussion = new Discussion();
+                    discussion.max = json.getInt("CountDiscussions");
+                    discussion.id = array1.getJSONObject(i).getInt("DiscussionID");
+                    discussion.name = array1.getJSONObject(i).getString("Name")+" <img src=\"announce.png\">";
                     String firstName = array1.getJSONObject(i).getString("FirstName");
                     String lastName = array1.getJSONObject(i).getString("LastName");
-                    String description = firstName + "     Most recent by: " + lastName;
                     URL url = new URL(array1.getJSONObject(i).getString("FirstPhoto"));
-                    Bitmap icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    discussions.add(new Discussion(name, description, id, icon, max));
+                    discussion.icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    discussion.commentMax = array1.getJSONObject(i).getInt("CountComments");
+                    if(Global.login){
+                        discussion.read = array1.getJSONObject(i).getBoolean("Read");
+                        discussion.unreadCount = array1.getJSONObject(i).getInt("CountUnreadComments");
+                    }
+                    if(!discussion.read) {
+                        discussion.description = firstName + "     Most recent by: " + lastName + "  "+discussion.unreadCount+" unread";
+                    }else {
+                        discussion.description = firstName + "     Most recent by: " + lastName;
+                    }
+                    discussions.add(discussion);
                 }
             }
             JSONArray array = json.getJSONArray("Discussions");
             for(int i = 0; i<array.length();i++){
-                int id = array.getJSONObject(i).getInt("DiscussionID");
                 String name="";
                 if(array.getJSONObject(i).getInt("Announce") == 1) {
                     name = array.getJSONObject(i).getString("Name") + " <img src=\"announce.png\">";
                 }else{
                     name = array.getJSONObject(i).getString("Name");
                 }
+                Discussion discussion = new Discussion();
+                discussion.max = json.getInt("CountDiscussions");
+                discussion.id = array.getJSONObject(i).getInt("DiscussionID");
+                discussion.name = name;
                 String firstName = array.getJSONObject(i).getString("FirstName");
                 String lastName = array.getJSONObject(i).getString("LastName");
-                String description = firstName + "     Most recent by: " + lastName;
+                if(Global.login){
+                    discussion.read = array.getJSONObject(i).getBoolean("Read");
+                    discussion.unreadCount = array.getJSONObject(i).getInt("CountUnreadComments");
+                }
+                if(!discussion.read) {
+                    discussion.description = firstName + "     Most recent by: " + lastName + "  "+discussion.unreadCount+" unread";
+                }else {
+                    discussion.description = firstName + "     Most recent by: " + lastName;
+                }
                 URL url = new URL(array.getJSONObject(i).getString("FirstPhoto"));
-                Bitmap icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                discussions.add(new Discussion(name,description,id,icon,max));
+                discussion.icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                discussion.commentMax = array.getJSONObject(i).getInt("CountComments");
+                discussions.add(discussion);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -90,5 +123,13 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
         fragment.adapter = new discussionAdapter(fragment.getActivity(),discussions,fragment.getResources());
         fragment.adapter.notifyDataSetChanged();
         fragment.setListAdapter(fragment.adapter);
+    }
+
+    public String getCookies() {
+        return Global.cookies;
+    }
+
+    public void setCookies(String cookies) {
+        Global.cookies = cookies;
     }
 }

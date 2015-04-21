@@ -22,7 +22,7 @@ public class discussionFragment extends ListFragment {
     OnThreadSelectedListener listener;
 
     public interface OnThreadSelectedListener{
-        public void OnThreadSelected(String id, String title);
+        public void OnThreadSelected(Discussion item);
     }
 
     @Override
@@ -79,9 +79,8 @@ public class discussionFragment extends ListFragment {
         if(isTablet) {
             getActivity().setTitle(title);
         }
-        listener.OnThreadSelected(dId,title);
+        listener.OnThreadSelected(item);
         System.out.println(dId);
-        //Toast.makeText(getActivity(), item.name, Toast.LENGTH_SHORT).show();
     }
 
 

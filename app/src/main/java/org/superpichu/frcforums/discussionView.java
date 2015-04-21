@@ -13,9 +13,10 @@ public class discussionView extends ActionBarActivity {
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
         String title = intent.getStringExtra("title");
+        String range = "#latest";
         setTitle(title);
-        commentFragment fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);        fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);
-        fragment.getComments("1-20", id);
+        commentFragment fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);
+        fragment.getComments(range, id);
 
     }
 

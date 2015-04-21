@@ -61,6 +61,10 @@ public class LoginActivity extends Activity {
         Credentials credentials = new Credentials(user,pass);
         File xml = new File(getFilesDir().getPath()+"/login.xml");
         try{
+            String[] details = new String[2];
+            details[0] = user;
+            details[1] = pass;
+            new Login().execute(details);
             Serializer serializer = new Persister();
             serializer.write(credentials,xml);
         }catch (Exception e){

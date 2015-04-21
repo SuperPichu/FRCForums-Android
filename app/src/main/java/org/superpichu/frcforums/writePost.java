@@ -8,9 +8,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-
 import java.io.File;
 
 
@@ -47,13 +44,10 @@ public class writePost extends ActionBarActivity {
         if (id == R.id.action_post) {
             File xml = new File(getFilesDir().getPath() + "/login.xml");
             if(xml.exists()) {
-                Credentials credentials  = new Credentials();
                 try {
-                    Serializer serializer = new Persister();
-                    credentials = serializer.read(Credentials.class,xml);
                     String bodyText = String.valueOf(body.getText());
                     addPost post = new addPost(dialog);
-                    String[] data = {dId, bodyText, credentials.getUser(), credentials.getPass()};
+                    String[] data = {dId, bodyText};
                     post.execute(data);
                 } catch (Exception e) {
                     e.printStackTrace();

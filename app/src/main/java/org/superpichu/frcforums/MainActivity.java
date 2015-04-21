@@ -7,6 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -23,6 +27,19 @@ public class MainActivity extends ActionBarActivity implements discussionFragmen
         super.onCreate(savedInstanceState);
         range = "1-20";
         String id = "902";
+        File xml = new File(getFilesDir().getPath()+"/login.xml");
+        if(xml.exists()){
+            Credentials credentials = new Credentials();
+            try{
+                Serializer serializer = new Persister();
+                credentials = serializer.read(Credentials.class,xml);
+                String[] data = {credentials.getUser(),credentials.getPass()};
+                new Login().execute(data).get();
+                Global.login = true;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         setContentView(R.layout.main_view);
     }
 
@@ -58,19 +75,21 @@ public class MainActivity extends ActionBarActivity implements discussionFragmen
     }
 
     @Override
-    public void OnThreadSelected(String id, String title) {
-        System.out.println(id);
+    public void OnThreadSelected(Discussion item) {
         boolean isTablet = getResources().getBoolean(R.bool.isTablet);
         if(isTablet) {
             commentFragment fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);
-            System.out.println("tablet");
             fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);
-            fragment.getComments("1-20", id);
+            String range = "#latest";
+            fragment.getComments(range, String.valueOf(item.id));
         }else {
-            System.out.println("phone");
+            String title = item.name;
+            if(title.contains("<")){
+                title = title.split("<")[0];
+            }
             Intent intent = new Intent(this, org.superpichu.frcforums.discussionView.class);
             intent.putExtra("title", title);
-            intent.putExtra("id", id);
+            intent.putExtra("id", item.id);
             startActivity(intent);
         }
     }

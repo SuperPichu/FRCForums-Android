@@ -1,7 +1,9 @@
 package org.superpichu.frcforums;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -42,6 +44,12 @@ public class discussionAdapter extends ArrayAdapter<Discussion>{
         viewHolder.title.setText(Html.fromHtml(discussion.name,new ImageGetter(),null));
         viewHolder.description.setText(discussion.description);
         viewHolder.icon.setImageBitmap(discussion.icon);
+        ColorStateList oldColors = viewHolder.description.getTextColors();
+        if(!discussion.read) {
+            viewHolder.title.setTextColor(Color.rgb(6, 104, 211));
+        }else{
+            viewHolder.title.setTextColor(oldColors);
+        }
         notifyDataSetChanged();
         return convertView;
     }
@@ -58,7 +66,7 @@ public class discussionAdapter extends ArrayAdapter<Discussion>{
             }
 
             Drawable d = resources.getDrawable(id);
-            d.setBounds(0,0,240,48);
+            d.setBounds(0,0,120,24);
             return d;
         }
     };

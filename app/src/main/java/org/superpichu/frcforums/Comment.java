@@ -13,6 +13,7 @@ public class Comment {
     public String date;
     public int max;
     public String thread;
+    public int page;
     public Comment(){
     }
 }

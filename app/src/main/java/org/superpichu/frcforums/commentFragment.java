@@ -33,7 +33,7 @@ public class commentFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         try {
-            range="1-20";
+            range="#latest";
             dialog = new Dialog(getActivity());
             dialog.setContentView(R.layout.loading);
         }catch (Exception e){
@@ -64,17 +64,9 @@ public class commentFragment extends ListFragment {
         public void onClick(View v) {
             try{
                 Comment item = (Comment)getListAdapter().getItem(0);
-                int max = item.max;
-                int start = Integer.parseInt(range.split("-")[1]);
-                if(start == max){
-                    start = max - 20;
-                }
-                int end = start+20;
-                if(end > max) {
-                    end = max;
-                }
-                start++;
-                range = start+"-"+end;
+                int page = item.page;
+                page++;
+                range = "/p"+page;
                 getComments(range, id);
             }catch (Exception e){
                 e.printStackTrace();
@@ -87,16 +79,10 @@ public class commentFragment extends ListFragment {
         @Override
         public void onClick(View v) {
             try{
-                int end = Integer.parseInt(range.split("-")[0]);
-                if(end <= 1){
-                    end = 21;
-                }
-                int start = end - 20;
-                if(start < 1){
-                    start = 1;
-                }
-                end--;
-                range = start+"-"+end;
+                Comment item = (Comment)getListAdapter().getItem(0);
+                int page = item.page;
+                page--;
+                range = "/p"+page;
                 getComments(range, id);
             }catch (Exception e){
                 e.printStackTrace();
@@ -109,8 +95,7 @@ public class commentFragment extends ListFragment {
         @Override
         public void onClick(View v) {
             try{
-                range = "1-21";
-                getComments(range, id);
+                getComments("/p1", id);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -122,11 +107,7 @@ public class commentFragment extends ListFragment {
         @Override
         public void onClick(View v) {
             try{
-                Comment item = (Comment)getListAdapter().getItem(0);
-                int end = item.max;
-                int start = end - 20;
-                range = start+"-"+end;
-                getComments(range, id);
+                getComments("#latest", id);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -135,7 +116,6 @@ public class commentFragment extends ListFragment {
     };
 
     public void getComments(String range, String dId){
-        //Activity activity1 = getActivity();
         Resources resources = getResources();
         this.id = dId;
         getCommentArray task = new getCommentArray(this);
