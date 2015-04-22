@@ -8,7 +8,7 @@ android {
         applicationId "org.superpichu.frcforums"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 8
+        versionCode 9
         versionName "1.5"
     }
     buildTypes {
