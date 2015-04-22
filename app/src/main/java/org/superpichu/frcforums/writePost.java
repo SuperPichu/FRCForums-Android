@@ -3,11 +3,13 @@ package org.superpichu.frcforums;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,6 +29,8 @@ public class writePost extends ActionBarActivity {
             quote = getIntent().getStringExtra("quote");
         }
         body.setText(quote);
+        Button strike = (Button)findViewById(R.id.strike);
+        strike.setPaintFlags(strike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.posting);
     }

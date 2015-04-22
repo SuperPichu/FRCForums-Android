@@ -54,11 +54,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/strike"
-                android:text="S"
                 android:layout_alignBottom="@+id/underline"
                 android:layout_toRightOf="@+id/underline"
                 android:layout_toEndOf="@+id/underline"
-                android:onClick="strike" />
+                android:onClick="strike"
+                android:text="S" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
