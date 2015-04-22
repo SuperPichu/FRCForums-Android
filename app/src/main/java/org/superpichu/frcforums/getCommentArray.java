@@ -79,7 +79,8 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
             int max = discussion.getInt("CountComments");
             String title = discussion.getString("Name");
             JSONArray array = json.getJSONArray("Comments");
-            if(range.startsWith("1-")){
+            int page = json.getInt("Page");
+            if(page == 1){
                 Comment first = new Comment();
                 first.max = max;
                 first.body = parseBody(discussion.getString("Body"));
@@ -88,7 +89,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 URL url = new URL(discussion.getString("InsertPhoto"));
                 first.icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 first.thread = title;
-                first.page = json.getInt("Page");
+                first.page = page;
                 first.raw = discussion.getString("Body");
                 first.dID = discussion.getInt("DiscussionID");
                 comments.add(first);

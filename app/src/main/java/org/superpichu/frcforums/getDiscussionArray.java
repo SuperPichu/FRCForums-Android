@@ -73,7 +73,7 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
                         discussion.unreadCount = array1.getJSONObject(i).getInt("CountUnreadComments");
                     }
                     if(!discussion.read) {
-                        discussion.description = firstName + "     Most recent by: " + lastName + "  "+discussion.unreadCount+" unread";
+                        discussion.description = firstName + "     Most recent by: " + lastName + "\n"+discussion.unreadCount+" unread";
                     }else {
                         discussion.description = firstName + "     Most recent by: " + lastName;
                     }
@@ -99,7 +99,7 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
                     discussion.unreadCount = array.getJSONObject(i).getInt("CountUnreadComments");
                 }
                 if(!discussion.read) {
-                    discussion.description = firstName + "     Most recent by: " + lastName + "  "+discussion.unreadCount+" unread";
+                    discussion.description = firstName + "     Most recent by: " + lastName + "\n"+discussion.unreadCount+" unread";
                 }else {
                     discussion.description = firstName + "     Most recent by: " + lastName;
                 }
