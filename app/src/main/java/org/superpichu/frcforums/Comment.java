@@ -14,6 +14,7 @@ public class Comment {
     public int max;
     public String thread;
     public int page;
+    public String raw;
     public Comment(){
     }
 }

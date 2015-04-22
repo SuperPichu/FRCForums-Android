@@ -9,7 +9,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,7 +28,7 @@ import java.util.List;
  */
 public class addPost extends AsyncTask<String[], Void, Void> {
 
-    private HttpClient client = new DefaultHttpClient();
+    private HttpClient client = Global.defaultClient;
     private final String USER_AGENT = "Mozilla/5.0";
     Dialog dialog;
     public addPost(Dialog dialog){
@@ -56,6 +55,7 @@ public class addPost extends AsyncTask<String[], Void, Void> {
         try {
             CookieHandler.setDefault(new CookieManager());
             String page2 = GetPageContent("http://forum.frontrowcrew.com/discussion/" + id+"/");
+            System.out.print(page2);
             List<NameValuePair> postParams = getPostParams(page2, id, body);
             postUrl = postUrl + id;
             makePost(postUrl, postParams);
@@ -117,8 +117,8 @@ public class addPost extends AsyncTask<String[], Void, Void> {
         String line = "";
         while ((line = rd.readLine()) != null) {
             result.append(line);
+            System.out.println(line);
         }
-
         // set cookies
         setCookies(response.getFirstHeader("Cookie") == null ? "" :
                 response.getFirstHeader("Cookie").toString());
@@ -131,8 +131,8 @@ public class addPost extends AsyncTask<String[], Void, Void> {
 
 
         Document doc = Jsoup.parse(html);
-        Element loginform = doc.getElementById("Form_Comment");
-        Elements inputElements = loginform.getElementsByTag("input");
+        Element form = doc.getElementById("Form_Comment");
+        Elements inputElements = form.getElementsByTag("input");
 
         List<NameValuePair> paramList = new ArrayList<NameValuePair>();
         for (Element inputElement : inputElements) {

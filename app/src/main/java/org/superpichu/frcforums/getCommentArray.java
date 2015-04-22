@@ -89,6 +89,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 first.icon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 first.thread = title;
                 first.page = json.getInt("Page");
+                first.raw = discussion.getString("Body");
                 comments.add(first);
             }
             for(int i = 0;i<array.length();i++){
@@ -102,6 +103,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 comment.max = max;
                 comment.thread = title;
                 comment.page = json.getInt("Page");
+                comment.raw = array.getJSONObject(i).getString("Body");
                 comments.add(comment);
             }
 
