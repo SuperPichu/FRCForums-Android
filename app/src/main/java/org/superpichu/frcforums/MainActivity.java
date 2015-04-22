@@ -89,7 +89,7 @@ public class MainActivity extends ActionBarActivity implements discussionFragmen
             }
             Intent intent = new Intent(this, org.superpichu.frcforums.discussionView.class);
             intent.putExtra("title", title);
-            intent.putExtra("id", item.id);
+            intent.putExtra("id", String.valueOf(item.id));
             startActivity(intent);
         }
     }

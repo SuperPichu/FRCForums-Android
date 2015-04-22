@@ -9,6 +9,20 @@
         android:paddingTop="16dp"
         android:paddingBottom="16dp">
 
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quote"
+            android:id="@+id/quote"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:layout_rowSpan="4"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp" />
+
         <TextView
             android:id="@+id/secondLine"
             android:layout_width="wrap_content"
@@ -26,7 +40,8 @@
             android:text="Example Text"
             android:textSize="16sp"
             android:layout_row="0"
-            android:layout_column="1" />
+            android:layout_column="1"
+            android:paddingRight="10dp" />
 
         <ImageView
             android:layout_width="32dp"
@@ -45,8 +60,8 @@
             android:id="@+id/body"
             android:text="This is a test of how much I can put here"
             android:layout_column="0"
-            android:layout_columnSpan="2"
-            android:layout_row="3"
+            android:layout_columnSpan="3"
+            android:layout_row="5"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:linksClickable="true" />

@@ -1,11 +1,13 @@
 package org.superpichu.frcforums;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +25,7 @@ public class commentAdapter extends ArrayAdapter<Comment> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.comments, parent, false);
@@ -48,8 +50,23 @@ public class commentAdapter extends ArrayAdapter<Comment> {
             viewHolder.body.setHtmlFromString(comment.body, false);
             viewHolder.body.setMovementMethod(LinkMovementMethod.getInstance());
         }
-
         notifyDataSetChanged();
+        Button quote = (Button) convertView.findViewById(R.id.quote);
+        quote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Comment comment = getItem(position);
+                try{
+                    Intent intent = new Intent(getContext(), writePost.class);
+                    intent.putExtra("id",String.valueOf(comment.dID));
+                    String quote = "<blockquote class=\"Quote\" rel=\""+comment.user+"\">"+comment.raw+"</blockquote>";
+                    intent.putExtra("quote",quote);
+                    getContext().startActivity(intent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
         return convertView;
     }
     private static class ViewHolder {

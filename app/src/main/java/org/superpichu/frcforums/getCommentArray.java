@@ -90,6 +90,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 first.thread = title;
                 first.page = json.getInt("Page");
                 first.raw = discussion.getString("Body");
+                first.dID = discussion.getInt("DiscussionID");
                 comments.add(first);
             }
             for(int i = 0;i<array.length();i++){
@@ -104,6 +105,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
                 comment.thread = title;
                 comment.page = json.getInt("Page");
                 comment.raw = array.getJSONObject(i).getString("Body");
+                comment.dID = discussion.getInt("DiscussionID");
                 comments.add(comment);
             }
 
