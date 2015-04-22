@@ -40,16 +40,14 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
         if(!fragment.dialog.isShowing()){
             fragment.dialog.show();
         }
-        //WebView webView = (WebView)fragment.dialog.findViewById(R.id.webView);
-        //webView.setInitialScale(100);
-        //webView.loadUrl("file:///android_res/drawable/loading.gif");
+
     }
     @Override
     protected void onPostExecute(ArrayList<Comment> comments){
         if(fragment.dialog.isShowing()){
             fragment.dialog.dismiss();
         }
-        fragment.adapter = new commentAdapter(fragment.getActivity(),comments);
+        fragment.adapter = new commentAdapter(fragment.getListView().getContext(),comments);
         fragment.adapter.notifyDataSetChanged();
         fragment.setListAdapter(fragment.adapter);
     }

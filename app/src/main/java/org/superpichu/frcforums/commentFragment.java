@@ -28,10 +28,10 @@ public class commentFragment extends ListFragment {
         return view;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         try {
             range="#latest";
             dialog = new Dialog(getActivity());
@@ -55,8 +55,6 @@ public class commentFragment extends ListFragment {
         firstC.setOnClickListener(firstActionC);
         lastC.setOnClickListener(lastActionC);
         post.setOnClickListener(postComment);
-        //TextView body = (TextView)getListView().
-        //body.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public View.OnClickListener nextActionC = new View.OnClickListener() {

@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
 
     <GridLayout
@@ -53,10 +53,9 @@
             android:layout_row="0" />
 
 
-        <view
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            class="org.sufficientlysecure.htmltextview.HtmlTextView"
             android:id="@+id/body"
             android:text="This is a test of how much I can put here"
             android:layout_column="0"
@@ -64,7 +63,10 @@
             android:layout_row="5"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:linksClickable="true" />
+            android:textIsSelectable="false"
+            android:linksClickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
 
     </GridLayout>
 
