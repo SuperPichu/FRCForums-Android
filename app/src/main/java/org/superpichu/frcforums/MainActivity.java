@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-//TODO Posting quotes and better input box
+//TODO Finish PM's and implement push notification client.
 public class MainActivity extends ActionBarActivity implements discussionFragment.OnThreadSelectedListener {
     ArrayList<Discussion> discussions;
     ArrayList<Comment> comments;
