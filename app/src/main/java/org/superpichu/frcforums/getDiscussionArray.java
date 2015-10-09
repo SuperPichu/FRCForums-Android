@@ -53,7 +53,11 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
             get.setHeader("Connection", "keep-alive");
             HttpResponse response = defaultClient.execute(get);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"UTF-8"));
-            String result = reader.readLine();
+            String result = "";
+            String line;
+            while ((line = reader.readLine()) != null){
+                result += line;
+            }
             JSONObject json = new JSONObject(result);
 
             if(range.startsWith("1-")){
