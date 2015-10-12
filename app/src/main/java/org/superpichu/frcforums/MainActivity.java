@@ -78,7 +78,7 @@ public class MainActivity extends ActionBarActivity implements discussionFragmen
     public void OnThreadSelected(Discussion item) {
         boolean isTablet = getResources().getBoolean(R.bool.isTablet);
         if(isTablet) {
-            commentFragment fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);
+            commentFragment fragment;
             fragment = (commentFragment) getFragmentManager().findFragmentById(R.id.comments_fragment);
             String range = "#latest";
             fragment.getComments(range, String.valueOf(item.id));

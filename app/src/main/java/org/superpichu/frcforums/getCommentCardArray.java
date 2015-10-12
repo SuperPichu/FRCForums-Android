@@ -26,14 +26,18 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.view.CardListView;
+
 /**
  * Created by chris on 4/1/15.
  */
-public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment>> {
-    private commentFragment fragment;
+public class getCommentCardArray extends AsyncTask<String[], Void, ArrayList<Comment>> {
+    private commentCardFragment fragment;
     private final String USER_AGENT = "Mozilla/5.0";
-    public getCommentArray(commentCardFragment fragment){
-        //this.fragment = fragment;
+    public getCommentCardArray(commentCardFragment fragment){
+        this.fragment = fragment;
     }
     @Override
     protected void onPreExecute(){
@@ -47,9 +51,15 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
         if(fragment.dialog.isShowing()){
             fragment.dialog.dismiss();
         }
-        fragment.adapter = new commentAdapter(fragment.getListView().getContext(),comments);
-        fragment.adapter.notifyDataSetChanged();
-        fragment.setListAdapter(fragment.adapter);
+        ArrayList<Card> cards = new ArrayList<Card>();
+        fragment.comments = comments;
+        for(Comment comment : comments){
+            Card card = new CommentCard(fragment.getActivity(),comment);
+            cards.add(card);
+        }
+        CardArrayAdapter adapter = new CardArrayAdapter(fragment.getActivity(),cards);
+        CardListView listView = (CardListView)fragment.getView().findViewById(R.id.myList);
+        listView.setAdapter(adapter);
     }
     @Override
     protected ArrayList<Comment> doInBackground(String[]... params) {
@@ -135,7 +145,7 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
 
         Document doc = Jsoup.parse(parsed);
         Elements images = doc.select("img[src]");
-        for(org.jsoup.nodes.Element image : images){
+        for(Element image : images){
             String link = image.attr("src");
             image.tagName("a");
             image.removeAttr("src");

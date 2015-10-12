@@ -1,7 +1,11 @@
 package org.superpichu.frcforums;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.text.Html;
+import android.view.View;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -16,14 +20,20 @@ import java.net.CookieManager;
 import java.net.URL;
 import java.util.ArrayList;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardExpand;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.view.CardListView;
+
 /**
  * Created by chris on 4/1/15.
  */
 
-public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discussion>> {
+public class getDiscussionCardArray extends AsyncTask<String, Void, ArrayList<Discussion>> {
     private discussionCardFragment fragment;
     private final String USER_AGENT = "Mozilla/5.0";
-    public getDiscussionArray(discussionCardFragment fragment){
+    public getDiscussionCardArray(discussionCardFragment fragment){
         this.fragment = fragment;
     }
     @Override
@@ -124,9 +134,36 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
         if(fragment.dialog.isShowing()){
             fragment.dialog.dismiss();
         }
-        fragment.adapter = new discussionAdapter(fragment.getActivity(),discussions,fragment.getResources());
-        fragment.adapter.notifyDataSetChanged();
-        //fragment.setListAdapter(fragment.adapter);
+        ArrayList<Card> cards = new ArrayList<>();
+        for(final Discussion discussion : discussions) {
+            DiscussionCard card = new DiscussionCard(fragment.getActivity(), discussion, fragment.getActivity().getFragmentManager());
+            card.setOnClickListener(new Card.OnCardClickListener() {
+                @Override
+                public void onClick(Card card, View view) {
+                    boolean isTablet = fragment.getResources().getBoolean(R.bool.isTablet);
+                    if(isTablet) {
+                        commentFragment comFragment;
+                        comFragment = (commentFragment) fragment.getFragmentManager().findFragmentById(R.id.comments_fragment);
+                        String range = "#latest";
+                        comFragment.getComments(range, String.valueOf(discussion.id));
+                    }else {
+                        String title = discussion.name;
+                        if(title.contains("<")){
+                            title = title.split("<")[0];
+                        }
+                        Intent intent = new Intent(fragment.getActivity(), org.superpichu.frcforums.discussionView.class);
+                        intent.putExtra("title", title);
+                        intent.putExtra("id", String.valueOf(discussion.id));
+                        fragment.startActivity(intent);
+                    }
+                }
+            });
+            cards.add(card);
+        }
+        fragment.discussions = discussions;
+        CardArrayAdapter adapter = new CardArrayAdapter(fragment.getActivity(),cards);
+        CardListView listView = (CardListView)fragment.getView().findViewById(R.id.myList);
+        listView.setAdapter(adapter);
     }
 
     public String getCookies() {
@@ -136,4 +173,5 @@ public class getDiscussionArray extends AsyncTask<String, Void, ArrayList<Discus
     public void setCookies(String cookies) {
         Global.cookies = cookies;
     }
+
 }

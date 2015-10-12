@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ListFragment;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,47 +14,26 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.view.CardListView;
 
-public class discussionFragment extends ListFragment {
-    private ArrayList<Discussion> discussions;
+
+public class discussionCardFragment extends Fragment {
+    public ArrayList<Discussion> discussions;
     public String range;
     public discussionAdapter adapter;
     public Dialog dialog;
-    OnThreadSelectedListener listener;
 
-    public interface OnThreadSelectedListener{
-        public void OnThreadSelected(Discussion item);
-    }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            listener = (OnThreadSelectedListener) activity;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        /**
+         * Inflate the layout for this fragment
+         */
+        return inflater.inflate(
+                R.layout.activity_main, container, false);
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_main, null);
-        return view;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        try {
-            range="1-20";
-            getDiscussions();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -66,64 +46,59 @@ public class discussionFragment extends ListFragment {
         first.setOnClickListener(firstAction);
         last.setOnClickListener(lastAction);
     }
-
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Discussion item = (Discussion)getListAdapter().getItem(position);
-        String title = item.name;
-        String dId = String.valueOf(item.id);
-        if(title.contains("<")){
-            title = title.split("<")[0];
-        }
-        boolean isTablet = getResources().getBoolean(R.bool.isTablet);
-        if(isTablet) {
-            getActivity().setTitle(title);
-        }
-        listener.OnThreadSelected(item);
-        System.out.println(dId);
-    }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        try {
+            range = "1-20";
+            getDiscussions();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public View.OnClickListener nextAction = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            try{
-                Discussion item = (Discussion)getListAdapter().getItem(0);
+            try {
+                Discussion item = discussions.get(0);
                 int max = item.max;
                 int start = Integer.parseInt(range.split("-")[1]);
-                if(start == max){
+                if (start == max) {
                     start = max - 20;
                 }
-                int end = start+20;
-                if(end > max) {
+                int end = start + 20;
+                if (end > max) {
                     end = max;
                 }
                 start++;
-                range = start+"-"+end;
+                range = start + "-" + end;
                 getDiscussions();
 
-            }catch (Exception e){
+            } catch (Exception e) {
             }
         }
     };
-
     public View.OnClickListener prevAction = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            try{
+            try {
                 int end = Integer.parseInt(range.split("-")[0]);
-                if(end <= 1){
+                if (end <= 1) {
                     end = 21;
                 }
                 int start = end - 20;
-                if(start < 1){
+                if (start < 1) {
                     start = 1;
                 }
                 end--;
-                range = start+"-"+end;
+                range = start + "-" + end;
                 getDiscussions();
 
-            }catch (Exception e){
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }
@@ -132,10 +107,10 @@ public class discussionFragment extends ListFragment {
     public View.OnClickListener firstAction = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            try{
+            try {
                 range = "1-21";
                 getDiscussions();
-            }catch (Exception e){
+            } catch (Exception e) {
             }
 
         }
@@ -144,21 +119,23 @@ public class discussionFragment extends ListFragment {
     public View.OnClickListener lastAction = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            try{
-                Discussion item = (Discussion)getListAdapter().getItem(0);
+            try {
+                Discussion item = discussions.get(0);
                 int end = item.max;
                 int start = end - 20;
-                range = start+"-"+end;
+                range = start + "-" + end;
                 getDiscussions();
-            }catch (Exception e){
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }
     };
-    public void getDiscussions(){
+
+    public void getDiscussions() {
         Resources resources = getResources();
         dialog = new Dialog(getActivity());
-        //getDiscussionArray task = new getDiscussionArray(this);
-        //task.execute(range);
+        getDiscussionCardArray task = new getDiscussionCardArray(this);
+        task.execute(range);
     }
 }

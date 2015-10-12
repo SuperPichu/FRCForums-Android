@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <fragment android:name="org.superpichu.frcforums.discussionFragment"
+    <fragment android:name="org.superpichu.frcforums.discussionCardFragment"
         android:id="@+id/discussions_fragment"
         android:layout_weight="1"
         android:layout_width="fill_parent"

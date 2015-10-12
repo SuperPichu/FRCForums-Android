@@ -5,6 +5,7 @@ import android.app.ListFragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 /**
  * Created by chris on 4/2/15.
  */
-public class commentFragment extends ListFragment {
-    private ArrayList<Comment> comments;
+public class commentCardFragment extends Fragment {
+    public ArrayList<Comment> comments;
     public String range;
     public commentAdapter adapter;
     public Dialog dialog;
@@ -61,7 +62,7 @@ public class commentFragment extends ListFragment {
         @Override
         public void onClick(View v) {
             try{
-                Comment item = (Comment)getListAdapter().getItem(0);
+                Comment item = comments.get(0);
                 int page = item.page;
                 page++;
                 range = "/p"+page;
@@ -77,7 +78,7 @@ public class commentFragment extends ListFragment {
         @Override
         public void onClick(View v) {
             try{
-                Comment item = (Comment)getListAdapter().getItem(0);
+                Comment item = comments.get(0);
                 int page = item.page;
                 page--;
                 range = "/p"+page;
@@ -116,9 +117,9 @@ public class commentFragment extends ListFragment {
     public void getComments(String range, String dId){
         Resources resources = getResources();
         this.id = dId;
-        //getCommentArray task = new getCommentArray(this);
-        //String[] data = {dId, range};
-        //task.execute(data);
+        getCommentArray task = new getCommentArray(this);
+        String[] data = {dId, range};
+        task.execute(data);
     }
 
     public View.OnClickListener postComment = new View.OnClickListener() {
