@@ -71,7 +71,11 @@ public class getCommentArray extends AsyncTask<String[], Void, ArrayList<Comment
         try {
             response = defaultClient.execute(get);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(),"UTF-8"));
-            String result = reader.readLine();
+            String result = "";
+            String line;
+            while ((line = reader.readLine()) != null){
+                result += line;
+            }
             JSONObject json = new JSONObject(result);
             JSONObject discussion = json.getJSONObject("Discussion");
             int max = discussion.getInt("CountComments");

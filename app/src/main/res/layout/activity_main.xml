@@ -32,6 +32,11 @@
         android:layout_alignParentBottom="false"
         android:layout_above="@+id/first" />
 
+    <!--<it.gmariotti.cardslib.library.view.CardListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/myList"/>-->
+
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
